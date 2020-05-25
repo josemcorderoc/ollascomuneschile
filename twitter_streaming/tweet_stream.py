@@ -19,6 +19,7 @@ api = tweepy.API(auth)
 
 # Creates Kafka producer
 ollascomunes_tweets_producer = KafkaProducer(bootstrap_servers='broker:29092')
+# ollascomunes_tweets_producer = KafkaProducer(bootstrap_servers='localhost:9092') #todo cambiar
 
 
 class MyStreamListener(tweepy.StreamListener):
@@ -27,8 +28,6 @@ class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
         print('mensaje enviado', self.i, 'RT?', 'retweeted_status' in status._json, flush=True)
         self.i += 1
-        # with open(f'data/twitter_query_example/{status._json["id_str"]}.json', 'w+') as outfile:
-        #     json.dump(status._json, outfile)
         if 'retweeted_status' not in status._json:
             ollascomunes_tweets_producer.send(TOPIC_OLLAS_COMUNES_TWITTER,
                                               json.dumps(status._json).encode('utf-8'))
@@ -41,4 +40,4 @@ if __name__ == '__main__':
     myStreamListener = MyStreamListener()
     myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)
     queries = ['#ollascomunes', '#ollacomun', 'olla comun']  # ollasolidario, menciones a @apoyalaolla
-    myStream.filter(track=[queries])
+    myStream.filter(track=queries)
