@@ -23,7 +23,7 @@ La estructura del proyecto se basa en cinco (5) microservicios:
 * Twitter Processing: procesa los mensajes utilizando Apache Spark (Structured Steaming).
 * Dashboard: visualización web con Flask y Plotly.
 
-### Objetivos del diseño:
+### Objetivos del diseño
 Busco desarrollar un sistema de lectura, procesamiento y distribución de información en base a tres principios:
 
 * Minimalismo: ocupar la menor cantidad de código y de recursos posibles.

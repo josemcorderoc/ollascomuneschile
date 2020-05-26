@@ -1,6 +1,6 @@
 FROM python:3.8-slim
 
-RUN pip install pandas awswrangler Flask plotly schedule
+RUN pip install pandas awswrangler Flask plotly schedule gunicorn
 
 WORKDIR /app
 
@@ -10,6 +10,8 @@ ARG AWS_SECRET_ACCESS_KEY
 ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 
+ENV PYTHONUNBUFFERED 1
+
 COPY . .
 
-ENTRYPOINT ["python", "app.py"]
+#ENTRYPOINT ["python", "app.py"]

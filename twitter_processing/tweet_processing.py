@@ -1,3 +1,5 @@
+import time
+
 import pandas as pd
 from flashtext import KeywordProcessor
 from datetime import datetime
@@ -7,12 +9,15 @@ import pytz
 import findspark
 findspark.init()
 
+print("##### Waiting Kafka #####")
+time.sleep(60)
+
 from init_spark import spark
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType
 from pyspark.sql.functions import from_json, col, year, month, dayofmonth, hour, udf, to_timestamp
 
 DATA_BUCKET_NAME = 'ollascomuneschile'
-PROCESSED_DATA_PREFIX_KEY = 'data/processed_tweets_hola'
+PROCESSED_DATA_PREFIX_KEY = 'data/processed_tweets_ollascomunes'
 DATA_BUCKET_REGION = 'us-east-2'
 
 TOPIC_OLLAS_COMUNES_TWITTER = "ollas-comunes-topic"
@@ -113,7 +118,7 @@ def preprocess_save_tweets():
         .option("header", "true") \
         .partitionBy("year", "month", "day", "hour") \
         .format("parquet") \
-        .trigger(processingTime="10 seconds") \
+        .trigger(processingTime="60 seconds") \
         .start()
     query.awaitTermination()
 
