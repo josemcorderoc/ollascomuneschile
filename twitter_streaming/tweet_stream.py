@@ -7,10 +7,9 @@ import time
 TOPIC_OLLAS_COMUNES_TWITTER = "ollas-comunes-topic"
 
 # Wait until Kafka server is loaded
-time.sleep(30)
+time.sleep(60)
 
 # Authenticate to Twitter
-
 auth = tweepy.OAuthHandler(os.environ['CONSUMER_API_KEY'], os.environ["CONSUMER_API_SECRET_KEY"])
 auth.set_access_token(os.environ["ACCESS_TOKEN"], os.environ["ACCESS_TOKEN_SECRET"])
 
@@ -36,8 +35,9 @@ class MyStreamListener(tweepy.StreamListener):
         print(exception)
         return
 
+
 if __name__ == '__main__':
     myStreamListener = MyStreamListener()
     myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)
-    queries = ['#ollascomunes', '#ollacomun', 'olla comun']  # ollasolidario, menciones a @apoyalaolla
-    myStream.filter(track=queries)
+    queries = ['#ollascomunes', '#ollacomun', 'olla comun', 'acopio']  # ollasolidario, menciones a @apoyalaolla
+    myStream.filter(track=['hola'])

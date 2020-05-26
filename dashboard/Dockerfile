@@ -1,6 +1,6 @@
 FROM python:3.8-slim
 
-RUN pip install pandas awswrangler Flask plotly
+RUN pip install pandas awswrangler Flask plotly schedule
 
 WORKDIR /app
 

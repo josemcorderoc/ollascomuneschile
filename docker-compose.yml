@@ -33,18 +33,18 @@ services:
 #        cub kafka-ready -b broker:29092 1 20 && \
 #        kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 1 --replication-factor 1 --topic  ollas-comunes-topic'"
 ##
-#  schema-registry:
-#    image: confluentinc/cp-schema-registry:5.5.0
-#    hostname: schema-registry
-#    container_name: schema-registry
-#    depends_on:
-#      - zookeeper
-#      - broker
-#    ports:
-#      - "8081:8081"
-#    environment:
-#      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-#      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
+  schema-registry:
+    image: confluentinc/cp-schema-registry:5.5.0
+    hostname: schema-registry
+    container_name: schema-registry
+    depends_on:
+      - zookeeper
+      - broker
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
 
   producer:
     build:
@@ -57,6 +57,7 @@ services:
     depends_on:
       - zookeeper
       - broker
+      - schema-registry
 
   consumer:
     build:
@@ -67,6 +68,7 @@ services:
     depends_on:
       - zookeeper
       - broker
+      - schema-registry
 
   web-app:
     build:

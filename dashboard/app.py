@@ -45,13 +45,11 @@ def get_lista_comunas():
         'comunas': ollascomunesdb.get_lista_comunas()
     }, ensure_ascii=False).encode('utf8')
 
-
-@app.route('/time_feed')
-def time_feed():
-    def generate():
-        yield ollascomunesdb.get_last_update_string()  # return also will work
-
-    return Response(generate(), mimetype='text')
+@app.route('/data/updates_history')
+def db_status():
+    return json.dumps({
+        'historico': ollascomunesdb.updates_history
+    }, ensure_ascii=False).encode('utf8')
 
 
 if __name__ == "__main__":

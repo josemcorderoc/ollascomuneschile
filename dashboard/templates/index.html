@@ -67,40 +67,10 @@
         Este proyecto es software libre. Si te interesa saber más, puedes revisar el código fuente en <a href="https://github.com/josemcorderoc/ollascomuneschile">GitHub</a>.
       </small></p>
 
-    <p id="last_update"></p>
 
     </div>
   </div>
 </div>
-
-
-
-
-
-
-<script>
-    var last_update = document.getElementById("last_update");
-    setInterval(() => {
-        fetch("{{ url_for('time_feed') }}")
-        .then(response => {
-                response.text().then(t => {last_update.innerHTML = t})
-            });
-        }, 1000);
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <div class="container">

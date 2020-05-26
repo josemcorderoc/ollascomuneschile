@@ -1,28 +1,46 @@
 import datetime
+import threading
+import time
+
 import awswrangler as wr
 import pandas as pd
-import schedule as schedule
-import s3fs
-import fastparquet as fp
-fs = s3fs.S3FileSystem()
-import pyarrow.parquet as pq
+import pytz
 
 DATA_BUCKET_NAME = 'ollascomuneschile'
-PROCESSED_DATA_PREFIX_KEY = 'data/processed_test_PARQUET2'
+PROCESSED_DATA_PREFIX_KEY = 'data/processed_tweets_hola'
 DATA_BUCKET_REGION = 'us-east-2'
+SANTIAGO_TZ = pytz.timezone('America/Santiago')
 
 
 class OllasComunesDB:
     def __init__(self):
         self.last_update = datetime.datetime.min
         self.df = pd.DataFrame()
+        self.updates_history = []
 
         self.get_initial_data()
-        # schedule.every(1).minutes.do(self.update_data)
+        self.thread_update_data()
 
     def get_last_update_string(self):
-        return self.last_update.strftime("%d-%m-%Y %H:%M:%S")
+        return self.last_update.replace(tzinfo=pytz.UTC).astimezone(SANTIAGO_TZ).strftime("%d-%m-%Y %H:%M:%S")
 
+    def thread_update_data(self):
+        th = threading.Thread(target=self.update_data)
+        th.daemon = True
+        th.start()
+
+    def get_current_info(self):
+        return {
+            'update_date': self.get_last_update_string(),
+            'db_size': len(self.df),
+            'db_size_unicos': len(self.df.drop_duplicates(subset=['tweet_id_str'])),
+            'df_size_comunas_notnull': len(self.df[self.df['comuna_identificada'] != '']),
+            'lista_comunas': self.get_lista_comunas(),
+            'primer_tweet':
+                self.df.sort_values(by='datetime', ascending=True).iloc[0].to_json(orient='records', force_ascii=False),
+            'ultimo_tweet':
+                self.df.sort_values(by='datetime', ascending=False).iloc[0].to_json(orient='records', force_ascii=False),
+        }
     def update_data(self):
         current_update = datetime.datetime.now()
         updated_at = self.last_update
@@ -41,26 +59,31 @@ class OllasComunesDB:
             updated_at += hour_step
         updated_df = pd.concat([self.df] + new_dfs, ignore_index=True).drop_duplicates(subset=['tweet_id_str'])
         updated_df = updated_df.drop_duplicates(subset=['tweet_id_str'])
-        # todo filter old tweets
 
+        # filter old tweets
+        week_delta = datetime.timedelta(days=7)
+        updated_df = updated_df[updated_df['datetime'] > current_update - week_delta]
 
         self.df = updated_df
         self.last_update = current_update
+
+        self.updates_history.append(self.get_current_info())
         print('Base actualizada')
+        threading.Timer(300.0, self.update_data).start()
 
     def get_initial_data(self):
         last_update = datetime.datetime.now()
-        # fp_obj = fp.ParquetFile(all_paths_from_s3, open_with=myopen)
-        # df = fp_obj.to_pandas()
-        # print(f"s3://{DATA_BUCKET_NAME}/{PROCESSED_DATA_PREFIX_KEY}/")
-        # dataset = pq.ParquetDataset(f"s3://{DATA_BUCKET_NAME}/{PROCESSED_DATA_PREFIX_KEY}", filesystem=fs)
-        # table = dataset.read()
-        # df = table.to_pandas()
+        for i in range(1, 11):
+            try:
+                df = wr.s3.read_parquet(path=f"s3://{DATA_BUCKET_NAME}/{PROCESSED_DATA_PREFIX_KEY}/", dataset=True)
+                self.df = df.drop_duplicates(subset=['tweet_id_str'])
+                self.last_update = last_update
+                return
+            except OSError:
+                print(f'Error: no existe la ruta (intento n.{i})')
+                time.sleep(10)
+        raise OSError('')
 
-        df = wr.s3.read_parquet(path=f"s3://{DATA_BUCKET_NAME}/{PROCESSED_DATA_PREFIX_KEY}/", dataset=True)
-
-        self.df = df
-        self.last_update = last_update
 
     def get_lista_comunas(self):
         return list(self.df['comuna_identificada'].dropna().unique())
@@ -85,8 +108,8 @@ class OllasComunesDB:
         '''
         df = self.df
         df = df[df['comuna_identificada'] == comuna]
-        ids = df.sort_values(by='datetime', ascending=False)['tweet_id_str'].tolist()
-        return ids[:n]
+        ids = df.sort_values(by='datetime', ascending=False)['tweet_id_str'].unique()
+        return list(ids)[:n]
 
 
 def add_hover_text_linebreaks(text):
@@ -94,26 +117,3 @@ def add_hover_text_linebreaks(text):
         return text[:40] + " <br> " + text[40:80] + " <br> " + text[80:]
     except TypeError:
         return ''
-
-
-
-
-import s3fs
-import pyarrow.parquet as pq
-fs = s3fs.S3FileSystem()
-
-bucket_uri = f's3://{DATA_BUCKET_NAME}/{PROCESSED_DATA_PREFIX_KEY}'
-dataset = pq.ParquetDataset(bucket_uri, filesystem=fs)
-table = dataset.read()
-df = table.to_pandas()
-
-
-
-s3_path = "ollascomuneschile/data/processed_test_PARQUET2/*/*/*/*.parquet"
-all_paths_from_s3 = fs.glob(path=s3_path)
-
-myopen = s3.open
-#use s3fs as the filesystem
-fp_obj = fp.ParquetFile(all_paths_from_s3,open_with=myopen)
-#convert to pandas dataframe
-df = fp_obj.to_pandas()

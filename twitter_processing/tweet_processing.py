@@ -1,22 +1,18 @@
-import findspark
 import pandas as pd
-import time
 from flashtext import KeywordProcessor
 from datetime import datetime
-
-findspark.init()
-
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType
-from pyspark.sql.functions import from_json, col, year, month, dayofmonth, hour, udf, to_timestamp
 from unidecode import unidecode
-
-from init_spark import spark
-
 import pytz
 
+import findspark
+findspark.init()
+
+from init_spark import spark
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType
+from pyspark.sql.functions import from_json, col, year, month, dayofmonth, hour, udf, to_timestamp
 
 DATA_BUCKET_NAME = 'ollascomuneschile'
-PROCESSED_DATA_PREFIX_KEY = 'data/processed_test_PARQUET2'
+PROCESSED_DATA_PREFIX_KEY = 'data/processed_tweets_hola'
 DATA_BUCKET_REGION = 'us-east-2'
 
 TOPIC_OLLAS_COMUNES_TWITTER = "ollas-comunes-topic"
@@ -50,20 +46,18 @@ for i, row in pd.read_csv("comunas.csv").iterrows():
         pass
 
 
-
 @udf(returnType=StringType())
 def get_tweet_datetime(created_at):
     '''
     Parses a 'created_at' tweet field to string datetime
-    :param created_at:
-    :return:
+    :param created_at: str
+    :return: str
     '''
     return datetime.strptime(
         created_at, '%a %b %d %H:%M:%S +0000 %Y') \
         .replace(tzinfo=pytz.UTC) \
         .astimezone(SANTIAGO_TZ) \
         .strftime("%Y-%m-%d %H:%M:%S")
-
 
 
 @udf(returnType=StringType())
@@ -73,7 +67,6 @@ def comuna_tweet(tweet):
     return ",".join(keywords_found)
 
 
-# todo broker:29092
 def preprocess_save_tweets():
     '''
     Streams data from Kafka topic, preprocess and stores it in an S3 bucket,
@@ -111,7 +104,7 @@ def preprocess_save_tweets():
 
     output_path = f"s3a://{DATA_BUCKET_NAME}/{PROCESSED_DATA_PREFIX_KEY}/"
     # output_path = "/home/jose/PycharmProjects/ollascomuneschile/ollascomuneschile/data/EJ3/"
-
+    print(f'Writing data batch at {datetime.now().strftime("%d-%m-%Y %H:%M:%S")}')
     query = df \
         .writeStream \
         .option("checkpointLocation", "/tmp/spark_checkpoints") \
@@ -120,13 +113,11 @@ def preprocess_save_tweets():
         .option("header", "true") \
         .partitionBy("year", "month", "day", "hour") \
         .format("parquet") \
-        .trigger(processingTime="45 seconds") \
+        .trigger(processingTime="10 seconds") \
         .start()
-
     query.awaitTermination()
 
 
 if __name__ == '__main__':
-    # wait until Kafka is ready
-    time.sleep(30)
+    print('########## Spark consumer start ##########')
     preprocess_save_tweets()

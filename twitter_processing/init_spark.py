@@ -1,13 +1,10 @@
 import os
-#
 import findspark
+
 findspark.init()
 
 from pyspark import SparkContext, SparkConf, SQLContext
 from pyspark.sql import SparkSession
-
-print(os.environ['AWS_ACCESS_KEY_ID'])
-print(os.environ['AWS_SECRET_ACCESS_KEY'])
 
 conf = (
     SparkConf()
@@ -22,8 +19,6 @@ conf = (
 
 )
 
-
 spark = SparkSession.builder.config(conf=conf).appName("ollascomuneschile").getOrCreate()
 
-# sc = SparkContext(conf=conf)
 print(f"Hadoop version = {spark.sparkContext._jvm.org.apache.hadoop.util.VersionInfo.getVersion()}")
