@@ -28,8 +28,5 @@ COPY . .
 RUN $SPARK_HOME/bin/spark-submit --version
 
 ENV PYTHONUNBUFFERED 1
+
 ENTRYPOINT ["python", "tweet_processing.py"]
-
-
-#RUN $SPARK_HOME/bin/spark-submit --master local --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.5,com.amazonaws:aws-java-sdk:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3 init_spark.py
-#ENTRYPOINT $SPARK_HOME/bin/spark-submit --master local --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.5,com.amazonaws:aws-java-sdk:1.7.4,org.apache.hadoop:hadoop-aws:2.7.3 tweet_processing.py

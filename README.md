@@ -2,6 +2,8 @@
 
 Aplicación web para ver en tiempo real información de las ollas comunes por comuna a partir de datos de Twitter. Busca ser un aporte a la seguridad alimentaria en la pandemia del COVID-19, 2020.
 
+Sitio web: [http://ollascomuneschile.cl/](http://ollascomuneschile.cl/)
+
 Autor: José Miguel Cordero [jcordero@dcc.uchile.cl](mailto:jcordero@dcc.uchile.cl)
 
 ### ¿Cómo ejecutarlo?

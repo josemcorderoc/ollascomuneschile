@@ -10,7 +10,8 @@ import findspark
 findspark.init()
 
 print("##### Waiting Kafka #####")
-time.sleep(60)
+time.sleep(100)
+print("##### Start #####")
 
 from init_spark import spark
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType
@@ -112,7 +113,7 @@ def preprocess_save_tweets():
     print(f'Writing data batch at {datetime.now().strftime("%d-%m-%Y %H:%M:%S")}')
     query = df \
         .writeStream \
-        .option("checkpointLocation", "/tmp/spark_checkpoints") \
+        .option("checkpointLocation", "/tmp/spark_checkpoints/v2") \
         .outputMode("append") \
         .option("path", output_path) \
         .option("header", "true") \

@@ -69,6 +69,7 @@ services:
       - zookeeper
       - broker
       - schema-registry
+      - producer
 
   web-app:
     build:
