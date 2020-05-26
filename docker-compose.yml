@@ -78,7 +78,7 @@ services:
         AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     ports:
       - "5000:5000"
-    command: gunicorn -b 0.0.0.0:5000 app:app --timeout 300
+    command: sudo gunicorn -b 0.0.0.0:80 app:app --timeout 300
 
 
 #docker-compose up -d --build
