@@ -45,11 +45,17 @@ def get_lista_comunas():
         'comunas': ollascomunesdb.get_lista_comunas()
     }, ensure_ascii=False).encode('utf8')
 
+
 @app.route('/data/updates_history')
 def db_status():
     return json.dumps({
         'historico': ollascomunesdb.updates_history
     }, ensure_ascii=False).encode('utf8')
+
+
+@app.route('/data/db')
+def db_status():
+    return ollascomunesdb.df.to_json(force_ascii=False)
 
 
 if __name__ == "__main__":
