@@ -143,7 +143,7 @@ def preprocess_save_tweets():
 
 if __name__ == '__main__':
     print("##### Waiting Kafka #####")
-    # time.sleep(100)
+    time.sleep(100)
     print('########## Spark consumer start ##########')
     preprocess_save_tweets()
 
