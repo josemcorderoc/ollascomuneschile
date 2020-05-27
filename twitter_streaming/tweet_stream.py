@@ -45,9 +45,9 @@ if __name__ == '__main__':
     queries = ['#ollascomunes', '#ollacomun', 'olla comun', 'acopio', 'ollacomun', 'olla común', '#ollacomún']  # ollasolidario, menciones a @apoyalaolla
 
     users = {
-        '@apoyalaolla': 1262973661121859584,
-        '@ComunOlla': 1259208616776732672,
-        '@LaOlladeChile': 1263146335206887424
+        '@apoyalaolla': '1262973661121859584',
+        '@ComunOlla': '1259208616776732672',
+        '@LaOlladeChile': '1263146335206887424'
     }
     myStream.filter(track=queries, follow=users.values())
     # myStream.filter(track=['hola'])
