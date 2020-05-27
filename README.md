@@ -37,6 +37,7 @@ que pueda conectarse con otras herramientas
 
 (lo complicado es compatibilizar los tres)
 ### to-do
+* Gráfico interactivo (clickeable y que redirija a Twitter)
 * Accesores para la base de datos (agregar/quitar filas, etc usando GET/POST)
 * Cambiar tipo csv a parquet u otro más estable/eficiente
     * Probé grabar parquet con Spark Structured Streaming, pero (por razones desconocidas) los archivos no se
@@ -47,5 +48,6 @@ que pueda conectarse con otras herramientas
 * Mejorar la clasificación por comuna: identificar calles, números de contacto y otros
 * Mapa de visualización para seleccionar comuna + mejorar interfaz de usuario
     * Hay problemas con modo responsive
+* Configurar métricas de Google Analytics
 * Integrar el Confluent S3 Sink para respaldar la data raw (actualmente solo se guarda el output procesado)
 * Explicitar la creación de los tópicos de Kafka (?) (actualmente los crea automáticamente el producer)
