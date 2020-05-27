@@ -1,0 +1,23 @@
+hr, h3 {padding-bottom: 20px;}canvas {background-color: #ffffff;}
+#bargraph {
+    width: auto;
+    height: auto;
+}
+@media screen and (min-width: 640px) {
+    body, html {
+        margin: 0;
+        overflow: hidden;
+        height:100%;
+    }
+
+}
+.container, .parent{
+    height: 100%;
+}
+
+#right{
+    position: relative;
+    float: left;
+    height:500px;
+    overflow-y: scroll;
+}
