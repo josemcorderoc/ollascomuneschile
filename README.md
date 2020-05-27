@@ -37,6 +37,7 @@ que pueda conectarse con otras herramientas
 
 (lo complicado es compatibilizar los tres)
 ### to-do
+* Accesores para la base de datos (agregar/quitar filas, etc usando GET/POST)
 * Cambiar tipo csv a parquet u otro más estable/eficiente
     * Probé grabar parquet con Spark Structured Streaming, pero (por razones desconocidas) los archivos no se
     grababan
