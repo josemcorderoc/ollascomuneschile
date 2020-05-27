@@ -82,6 +82,7 @@ def preprocess_save_tweets():
         .format("kafka") \
         .option("kafka.bootstrap.servers", "broker:29092") \
         .option("subscribe", TOPIC_OLLAS_COMUNES_TWITTER) \
+        .option("failOnDataLoss", "false") \
         .load()
 
     df = tweets_stream.selectExpr("CAST(value AS STRING) as json_data")
