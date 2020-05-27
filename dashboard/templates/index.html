@@ -25,14 +25,14 @@
       width: auto;
       height: auto;
     }
-@media screen and (min-width: 640px) {
-  body, html {
-      margin: 0;
-      overflow: hidden;
-      height:100%;
-    }
+    @media screen and (min-width: 640px) {
+      body, html {
+        margin: 0;
+        overflow: hidden;
+        height:100%;
+      }
 
-}
+    }
     .container, .parent{
       height: 100%;
     }
@@ -56,7 +56,7 @@
         <h2>Ollas Comunes de Chile</h2>
         <p><i>"Hay dos panes. Usted se come dos. Yo ninguno. <br> Consumo promedio: un pan por persona" (Nicanor Parra)</i></p>
         <label><b>Seleccione una comuna:</b></label>
-        <select class="form-control" id ='select-comuna'>
+        <select class="form-control mb-3" id ='select-comuna'>
           <option disabled selected value> ------ </option>
         </select>
 
@@ -65,11 +65,9 @@
         <p align="justify">
           Dada la incapacidad del gobierno de hacer frente al hambre, disponibilizamos esta página donde puedes consultar información actualizada en tiempo real de las ollas comunes por comuna, de acuerdo a información de Twitter, tan solo seleccionando la comuna de interés. <i> (Advertencia: las informaciones vertidas en Twitter dependen de quién las emite y pueden ser falsas.)</i>
         </p>
-
         <p><small>
           Este proyecto es <a href="https://es.wikipedia.org/wiki/Software_libre">software libre</a>. Si te interesa saber más, puedes revisar el código fuente en <a href="https://github.com/josemcorderoc/ollascomuneschile">GitHub</a>.
         </small></p>
-
 
       </div>
     </div>
@@ -78,23 +76,18 @@
 
 
 <div class="container">
-  <div class="row">
+  <div class="row parent">
+
+    <div id="right" class="col-md-6">
+      <h3>Tweets más recientes</h3>
+      <div id="latest-tweets"></div>
+    </div>
     <div class="col-md-6">
       <h3>Tweets de la semana</h3>
-
-    </div>
-    <div class="col-md-6"><h3>Tweets más recientes</h3></div>
-  </div>
-  <div class="row parent">
-    <div class="col-md-6">
       <p><i>(Clickea un punto para dirigirte al tweeet correspondiente)</i></p>
       <div class="chart responsive-plot" id="bargraph"></div>
       <hr>
     </div>
-    <div id="right" class="col-md-6">
-      <div id="latest-tweets"></div>
-    </div>
-
   </div>
 
 </div>
