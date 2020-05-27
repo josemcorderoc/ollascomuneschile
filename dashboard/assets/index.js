@@ -78,6 +78,12 @@ $(document).ready(function() {
 
     });
 
+    $("#info-comunas").tooltip({
+        'selector': '',
+        'placement': 'top',
+        'container':'body'
+    });
+
 
 
 });
@@ -87,4 +93,8 @@ $("#select-comuna").change(function(){
 
     update_tweets_plot(comuna);
     update_latest_tweets(comuna);
+});
+
+$(document).ready(function () {
+
 });

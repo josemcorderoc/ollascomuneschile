@@ -34,6 +34,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
   <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="https://kit.fontawesome.com/7302a60ea2.js" crossorigin="anonymous"></script>
 
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
@@ -48,12 +49,17 @@
     <div class="row justify-content-center">
 
       <div class="col-md-6">
-        <h2>Ollas Comunes de Chile</h2>
+        <h2>#OllasComunes de Chile</h2>
         <p><i>"Hay dos panes. Usted se come dos. Yo ninguno. <br> Consumo promedio: un pan por persona" (Nicanor Parra)</i></p>
         <label><b>Seleccione una comuna:</b></label>
         <select class="form-control mb-3" id ='select-comuna'>
           <option disabled selected value> ------ </option>
         </select>
+        <small>¿Por qué no aparece mi comuna? </small>
+        <a id="info-comunas" rel="tooltip" title="Las comunas se van agregando automáticamente a medida que identificamos
+         tweets nuevos que la mencionan. Lamentablemente, en Twitter no se sube información de todas las comunas del país.
+         Si quieres que tu información salga aquí, solo debes twittear con el hashtag #OllasComunes y mencionar tu comuna
+         en el tweet."><i class="fas fa-question-circle"></i></a>
 
       </div>
       <div class="col-md-6">
@@ -78,11 +84,12 @@
 
     <div id="right" class="col-md-6">
       <h3>Tweets más recientes</h3>
+
       <div id="latest-tweets"></div>
     </div>
     <div class="col-md-6">
       <h3>Tweets de la semana</h3>
-<!--      <p><i>(Clickea un punto para dirigirte al tweet correspondiente)</i></p>-->
+      <!--      <p><i>(Clickea un punto para dirigirte al tweet correspondiente)</i></p>-->
       <div class="chart responsive-plot" id="bargraph"></div>
       <hr>
     </div>
