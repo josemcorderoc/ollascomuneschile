@@ -37,6 +37,7 @@ que pueda conectarse con otras herramientas
 
 (lo complicado es compatibilizar los tres)
 ### to-do
+* Agregar sinónimos para las comunas (ej: Pedro Aguirre Cerda -> PAC)
 * Gráfico interactivo (clickeable y que redirija a Twitter)
 * Accesores para la base de datos (agregar/quitar filas, etc usando GET/POST)
 * Cambiar tipo csv a parquet u otro más estable/eficiente
