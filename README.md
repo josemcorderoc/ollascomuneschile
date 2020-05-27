@@ -40,6 +40,7 @@ que pueda conectarse con otras herramientas
 * Agregar sinónimos para las comunas (ej: Pedro Aguirre Cerda -> PAC)
 * Gráfico interactivo (clickeable y que redirija a Twitter)
 * Accesores para la base de datos (agregar/quitar filas, etc usando GET/POST)
+    *Tal vez sería mejor agregar un servicio que sea una BBDD tipo SQL (vs approach actual, leer todo en memoria desde s3)
 * Cambiar tipo csv a parquet u otro más estable/eficiente
     * Probé grabar parquet con Spark Structured Streaming, pero (por razones desconocidas) los archivos no se
     grababan

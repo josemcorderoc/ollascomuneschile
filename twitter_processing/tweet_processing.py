@@ -44,6 +44,9 @@ COMUNAS_KEYWORDS = KeywordProcessor()
 for i, row in pd.read_csv("comunas.csv").iterrows():
     comuna = row['comuna']
     variations = {comuna, unidecode(comuna), comuna.replace(' ', ''), unidecode(comuna.replace(' ', ''))}
+    ht_variations = {f'#{variation}' for variation in variations}
+    variations = variations.union(ht_variations)
+
     for comuna_var in variations:
         COMUNAS_KEYWORDS.add_keyword(comuna_var, comuna)
 
