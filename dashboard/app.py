@@ -54,9 +54,9 @@ def db_status():
 
 
 @app.route('/data/db')
-def db_status():
+def show_db():
     return ollascomunesdb.df.to_json(force_ascii=False)
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0")
