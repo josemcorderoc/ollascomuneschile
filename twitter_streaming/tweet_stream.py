@@ -1,3 +1,4 @@
+import datetime
 import json
 import tweepy
 from kafka import KafkaProducer
@@ -7,7 +8,9 @@ import time
 TOPIC_OLLAS_COMUNES_TWITTER = "ollas-comunes-topic"
 
 # Wait until Kafka server is loaded
+print('Waiting for Kafka')
 time.sleep(45)
+print('Ready')
 
 # Authenticate to Twitter
 auth = tweepy.OAuthHandler(os.environ['CONSUMER_API_KEY'], os.environ["CONSUMER_API_SECRET_KEY"])
@@ -25,9 +28,9 @@ class MyStreamListener(tweepy.StreamListener):
     i = 0
 
     def on_status(self, status):
-        print('mensaje enviado', self.i, 'RT?', 'retweeted_status' in status._json, flush=True)
         self.i += 1
         if 'retweeted_status' not in status._json:
+            print(f'Mensaje num {self.i} enviado a las {datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")}')
             ollascomunes_tweets_producer.send(TOPIC_OLLAS_COMUNES_TWITTER,
                                               json.dumps(status._json).encode('utf-8'))
 
@@ -41,3 +44,4 @@ if __name__ == '__main__':
     myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)
     queries = ['#ollascomunes', '#ollacomun', 'olla comun', 'acopio', 'ollacomun']  # ollasolidario, menciones a @apoyalaolla
     myStream.filter(track=queries)
+    # myStream.filter(track=['hola'])

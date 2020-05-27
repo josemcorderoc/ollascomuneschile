@@ -7,18 +7,17 @@ from unidecode import unidecode
 import pytz
 
 import findspark
-findspark.init()
 
-print("##### Waiting Kafka #####")
-time.sleep(100)
-print("##### Start #####")
+findspark.init()
 
 from init_spark import spark
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType
 from pyspark.sql.functions import from_json, col, year, month, dayofmonth, hour, udf, to_timestamp
 
 DATA_BUCKET_NAME = 'ollascomuneschile'
-PROCESSED_DATA_PREFIX_KEY = 'data/processed_tweets_ollascomunes'
+# PROCESSED_DATA_PREFIX_KEY = 'data/processed_tweets_ollascomunes'
+PROCESSED_DATA_PREFIX_KEY = 'data/processed_tweets_ollascomunes_csv_v3'
+# PROCESSED_DATA_PREFIX_KEY = 'data/processed_tweets_hola_hola'
 DATA_BUCKET_REGION = 'us-east-2'
 
 TOPIC_OLLAS_COMUNES_TWITTER = "ollas-comunes-topic"
@@ -100,6 +99,7 @@ def preprocess_save_tweets():
 
     df = df.withColumn('comuna_identificada', comuna_tweet('text'))
     df = df.withColumn("datetime", to_timestamp(get_tweet_datetime("created_at")))
+
     df.printSchema()
 
     df = df \
@@ -108,22 +108,44 @@ def preprocess_save_tweets():
         .withColumn("day", dayofmonth(col("datetime"))) \
         .withColumn("hour", hour(col("datetime")))
 
-    output_path = f"s3a://{DATA_BUCKET_NAME}/{PROCESSED_DATA_PREFIX_KEY}/"
+    output_path = f"s3a://{DATA_BUCKET_NAME}/{PROCESSED_DATA_PREFIX_KEY}"
+    checkpoint_path = f"s3a://{DATA_BUCKET_NAME}/spark_checkpoints/v2/"
     # output_path = "/home/jose/PycharmProjects/ollascomuneschile/ollascomuneschile/data/EJ3/"
-    print(f'Writing data batch at {datetime.now().strftime("%d-%m-%Y %H:%M:%S")}')
-    query = df \
-        .writeStream \
-        .option("checkpointLocation", "/tmp/spark_checkpoints/v2") \
-        .outputMode("append") \
-        .option("path", output_path) \
-        .option("header", "true") \
+    print(f'##### BEGIN WRITING STREAM AT {datetime.now().strftime("%d-%m-%Y %H:%M:%S")} #####')
+
+    df.writeStream \
+        .format("csv") \
         .partitionBy("year", "month", "day", "hour") \
-        .format("parquet") \
-        .trigger(processingTime="60 seconds") \
-        .start()
-    query.awaitTermination()
+        .option("header", "true") \
+        .option("checkpointLocation", checkpoint_path) \
+        .option("path", output_path) \
+        .start() \
+        .awaitTermination()
+
+    # df.writeStream \
+    #     .format("parquet") \
+    #     .partitionBy("year", "month", "day", "hour") \
+    #     .option("checkpointLocation", checkpoint_path) \
+    #     .option("path", output_path) \
+    #     .trigger(processingTime="60 seconds") \
+    #     .start() \
+    #     .awaitTermination()
+
+    # df.writeStream \
+    #     .format("parquet") \
+    #     .option("checkpointLocation", checkpoint_path) \
+    #     .outputMode("append") \
+    #     .option("path", output_path) \
+    #     .partitionBy("year", "month", "day", "hour") \
+    #     .start() \
+    #     .awaitTermination()
 
 
 if __name__ == '__main__':
+    print("##### Waiting Kafka #####")
+    # time.sleep(100)
     print('########## Spark consumer start ##########')
     preprocess_save_tweets()
+
+# .trigger(processingTime="10 seconds") \
+# .option("header", "true")

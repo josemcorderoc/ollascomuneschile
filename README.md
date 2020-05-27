@@ -37,10 +37,14 @@ que pueda conectarse con otras herramientas
 
 (lo complicado es compatibilizar los tres)
 ### to-do
+* Cambiar tipo csv a parquet u otro más estable/eficiente
+    * Probé grabar parquet con Spark Structured Streaming, pero (por razones desconocidas) los archivos no se
+    grababan
 * Disminuir el tiempo de refresco al mínimo (objetivo: data actualizada a menos de 15 segundos)
     * Actualmente se escribe a S3 y se lee desde S3. Rediseñando la arquitectura la aplicación web podría recibir
     los mensajes directamente, evitando el delay de lectura y escritura (¿pero cómo respaldamos los datos?)
 * Mejorar la clasificación por comuna: identificar calles, números de contacto y otros
 * Mapa de visualización para seleccionar comuna + mejorar interfaz de usuario
+    * Hay problemas con modo responsive
 * Integrar el Confluent S3 Sink para respaldar la data raw (actualmente solo se guarda el output procesado)
 * Explicitar la creación de los tópicos de Kafka (?) (actualmente los crea automáticamente el producer)
