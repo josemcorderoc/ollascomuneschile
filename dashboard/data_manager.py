@@ -47,8 +47,7 @@ class OllasComunesDB:
         return {
             'update_date': self.get_last_update_string(),
             'db_size': len(self.df),
-            'db_size_unicos': len(self.df.drop_duplicates(subset=['tweet_id_str'])),
-            'df_size_comunas_notnull': len(self.df[self.df['comuna_identificada'] != '']),
+            'df_size_comunas_notnull': len(self.df[self.df['comuna_identificada'] != '']['comuna_identificada'].dropna()),
             'lista_comunas': self.get_lista_comunas(),
             'primer_tweet':
                 self.df.sort_values(by='datetime', ascending=True).iloc[0].to_json(orient='records', force_ascii=False),
@@ -58,6 +57,7 @@ class OllasComunesDB:
         }
 
     def update_data(self):
+        # todo only update, not picking all data
         current_update = datetime.datetime.now().replace(tzinfo=pytz.UTC).astimezone(SANTIAGO_TZ)
         # updated_at = self.last_update
         # print('Actualizando DB a las {}'.format(current_update.strftime("%d-%m-%Y %H:%M:%S")))
