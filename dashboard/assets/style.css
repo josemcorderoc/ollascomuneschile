@@ -4,12 +4,12 @@ hr, h3 {padding-bottom: 20px;}canvas {background-color: #ffffff;}
     height: auto;
 }
 @media screen and (min-width: 640px) {
-    body, html {
-        margin: 0;
-        overflow: hidden;
-        height:100%;
-    }
-
+    /*body, html {*/
+    /*    margin: 0;*/
+    /*    overflow-y:auto !important;*/
+    /*    height:100%;*/
+    /*}*/
+html { overflow-y: scroll; }
 }
 .container, .parent{
     height: 100%;

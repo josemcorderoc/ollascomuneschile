@@ -57,6 +57,12 @@ def db_status():
 def show_db():
     return ollascomunesdb.df.to_json(force_ascii=False)
 
+@app.route('/data/last_update')
+def last_update_time():
+    return json.dumps({
+        'last_update': ollascomunesdb.get_last_update_string()
+    }, ensure_ascii=False).encode('utf8')
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")

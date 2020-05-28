@@ -78,6 +78,11 @@ $(document).ready(function() {
 
     });
 
+    $.get("data/last_update", function (data) {
+        var parsed_data = JSON.parse(data);
+        $('#ultima-actualizacion').html("Última actualización: " + parsed_data.last_update);
+    })
+
     $("#info-comunas").tooltip({
         'selector': '',
         'placement': 'top',

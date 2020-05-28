@@ -86,12 +86,14 @@ class OllasComunesDB:
         # print('hace 7 dias:', (current_update.replace(tzinfo=None) - week_delta))
         # updated_df = updated_df[updated_df['datetime'] > (current_update.replace(tzinfo=None) - week_delta)]
         # self.df = updated_df
-
-        self.df = self.get_s3_tweets_df(current_update)
-        self.last_update = current_update
-
-        self.updates_history.append(self.get_current_info())
-        print('Base actualizada')
+        try:
+            self.df = self.get_s3_tweets_df(current_update)
+            self.last_update = current_update
+            self.updates_history.append(self.get_current_info())
+            print(f'Base actualizada a las {self.get_last_update_string()}')
+        except FileNotFoundError as e:
+            print(f'Error al actualizar base a las {self.get_last_update_string()}')
+            print(e)
         threading.Timer(300.0, self.update_data).start()
 
     def get_s3_tweets_df(self, update_date):
@@ -121,7 +123,7 @@ class OllasComunesDB:
         raise OSError('')
 
     def get_lista_comunas(self):
-        return list(self.df['comuna_identificada'].dropna().unique())
+        return list(self.df['comuna_identificada'].dropna().sort_values().unique())
 
     def get_tweets_comuna(self, comuna):
         '''
