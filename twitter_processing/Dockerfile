@@ -1,6 +1,6 @@
 FROM jupyter/pyspark-notebook
 RUN conda install tweepy findspark Unidecode pytz
-RUN pip install kafka_python flashtext
+
 
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
@@ -12,6 +12,10 @@ USER root
 # Add essential packages
 RUN apt-get update && apt-get install -y build-essential curl git gnupg2 nano apt-transport-https software-properties-common
 # Set locale
+RUN apt-get install -y postgresql-server-dev-10 gcc python3-dev musl-dev
+RUN pip install kafka_python flashtext psycopg2
+
+
 RUN apt-get update && apt-get install -y locales \
     && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
     && locale-gen

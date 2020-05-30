@@ -1,5 +1,6 @@
 FROM python:3.7-alpine
-RUN pip install kafka_python tweepy
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+RUN pip install kafka_python tweepy psycopg2
 
 WORKDIR /app
 COPY tweet_stream.py .
