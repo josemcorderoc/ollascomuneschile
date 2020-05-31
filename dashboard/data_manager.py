@@ -48,6 +48,12 @@ class OllasComunesDB:
         th.start()
 
     def get_current_info(self):
+        if len(self.df) == 0:
+            return {
+            'update_date': self.get_last_update_string(),
+            'db_size': len(self.df),
+            }
+
         return {
             'update_date': self.get_last_update_string(),
             'db_size': len(self.df),
