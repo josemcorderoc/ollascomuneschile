@@ -59,33 +59,6 @@ class OllasComunesDB:
     def update_data(self):
         # todo only update, not picking all data
         current_update = datetime.datetime.now().replace(tzinfo=pytz.UTC).astimezone(SANTIAGO_TZ)
-        # updated_at = self.last_update
-        # print('Actualizando DB a las {}'.format(current_update.strftime("%d-%m-%Y %H:%M:%S")))
-        #
-        # hour_step = datetime.timedelta(hours=1)
-        # new_dfs = []
-        # while updated_at <= current_update:
-        #     path = f"s3://{DATA_BUCKET_NAME}/{PROCESSED_DATA_PREFIX_KEY}/" \
-        #            f"year={updated_at.year}/month={updated_at.month}/day={updated_at.day}/hour={updated_at.hour}/"
-        #     print('Path:', path)
-        #     try:
-        #         df = wr.s3.read_parquet(path=path, dataset=True)
-        #         new_dfs.append(df)
-        #         print(f'Nuevos tweets: {len(df)}')
-        #     except OSError:
-        #         print('No se encontró bbdd')
-        #         pass
-        #     updated_at += hour_step
-        # updated_df = pd.concat([self.df] + new_dfs, ignore_index=True)
-        #
-        # # drop possible duplicated
-        # updated_df = updated_df.drop_duplicates(subset=['tweet_id_str'])
-        #
-        # # filter old tweets
-        # week_delta = datetime.timedelta(days=7)
-        # print('hace 7 dias:', (current_update.replace(tzinfo=None) - week_delta))
-        # updated_df = updated_df[updated_df['datetime'] > (current_update.replace(tzinfo=None) - week_delta)]
-        # self.df = updated_df
         try:
             self.df = self.get_s3_tweets_df(current_update)
             self.last_update = current_update
