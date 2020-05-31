@@ -16,11 +16,11 @@ from init_spark import spark
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType
 from pyspark.sql.functions import from_json, col, year, month, dayofmonth, hour, udf, to_timestamp
 
-DATA_BUCKET_NAME = 'ollascomuneschile'
+# DATA_BUCKET_NAME = 'ollascomuneschile'
 # PROCESSED_DATA_PREFIX_KEY = 'data/processed_tweets_ollascomunes'
-PROCESSED_DATA_PREFIX_KEY = 'data/processed_tweets_ollascomunes_csv_v3'
+# PROCESSED_DATA_PREFIX_KEY = 'data/processed_tweets_ollascomunes_csv_v3'
 # PROCESSED_DATA_PREFIX_KEY = 'data/processed_tweets_hola_hola'
-DATA_BUCKET_REGION = 'us-east-2'
+# DATA_BUCKET_REGION = 'us-east-2'
 
 TOPIC_OLLAS_COMUNES_TWITTER = "ollas-comunes-topic"
 SANTIAGO_TZ = pytz.timezone('America/Santiago')
@@ -165,8 +165,9 @@ def preprocess_save_tweets():
         .withColumn("day", dayofmonth(col("datetime"))) \
         .withColumn("hour", hour(col("datetime")))
 
-    output_path = f"s3a://{DATA_BUCKET_NAME}/{PROCESSED_DATA_PREFIX_KEY}"
-    checkpoint_path = f"s3a://{DATA_BUCKET_NAME}/spark_checkpoints/v2/"
+    # output_path = f"s3a://{DATA_BUCKET_NAME}/{PROCESSED_DATA_PREFIX_KEY}"
+    # checkpoint_path = f"s3a://{DATA_BUCKET_NAME}/spark_checkpoints/v2/"
+    #
     # output_path = "/home/jose/PycharmProjects/ollascomuneschile/ollascomuneschile/data/EJ3/"
     print(f'##### BEGIN WRITING STREAM AT {datetime.now().strftime("%d-%m-%Y %H:%M:%S")} #####')
 
@@ -184,7 +185,7 @@ def preprocess_save_tweets():
 
 if __name__ == '__main__':
     print("##### Waiting Kafka #####")
-    # time.sleep(100)
+    time.sleep(100)
     print('########## Spark consumer start ##########')
     preprocess_save_tweets()
 

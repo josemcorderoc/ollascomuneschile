@@ -13,7 +13,7 @@ TOPIC_OLLAS_COMUNES_TWITTER = "ollas-comunes-topic"
 
 # Wait until Kafka server is loaded
 print('Waiting for Kafka')
-# time.sleep(45)
+time.sleep(45)
 print('Ready')
 
 # Authenticate to Twitter
