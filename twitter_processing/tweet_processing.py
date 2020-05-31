@@ -1,6 +1,8 @@
+import os
 import time
 
 import pandas as pd
+import psycopg2
 from flashtext import KeywordProcessor
 from datetime import datetime
 from unidecode import unidecode
@@ -52,6 +54,56 @@ for i, row in pd.read_csv("comunas.csv").iterrows():
 
     if pd.notna(row['sinonimos']):
         pass
+
+
+
+
+class ForeachWriter:
+
+    def process(self, row):
+        try:
+            conn = psycopg2.connect(
+                database="ollascomuneschile",
+                user="postgres",
+                host="db",
+                password=os.environ['POSTGRES_PASSWORD']
+            )
+
+            cur = conn.cursor()
+            row = row.asDict()
+
+            values = (
+                row["tweet_id_str"],
+                row["created_at"],
+                row["text"],
+                row["user_id_str"],
+                row["user_screen_name"],
+                row["user_followers_count"],
+                row["user_friends_count"],
+                row["user_statuses_count"],
+                row["datetime"],
+                row["comuna_identificada"]
+            )
+
+            cur.execute(f"""INSERT INTO tweets_ollascomunes_processed (tweet_id_str, created_at, text, user_id_str, user_screen_name,
+                            user_followers_count, user_friends_count, user_statuses_count, datetime, comuna_identificada)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);""", values)
+
+            conn.commit()
+            cur.close()
+        except psycopg2.DatabaseError as error:
+            print(error)
+        finally:
+            if conn is not None:
+                conn.close()
+
+    def close(self, error):
+        if error:
+            print(error)
+
+
+
+
 
 
 @udf(returnType=StringType())
@@ -118,37 +170,21 @@ def preprocess_save_tweets():
     # output_path = "/home/jose/PycharmProjects/ollascomuneschile/ollascomuneschile/data/EJ3/"
     print(f'##### BEGIN WRITING STREAM AT {datetime.now().strftime("%d-%m-%Y %H:%M:%S")} #####')
 
-    df.writeStream \
-        .format("csv") \
-        .partitionBy("year", "month", "day", "hour") \
-        .option("header", "true") \
-        .option("checkpointLocation", checkpoint_path) \
-        .option("path", output_path) \
-        .start() \
-        .awaitTermination()
-
     # df.writeStream \
-    #     .format("parquet") \
+    #     .format("csv") \
     #     .partitionBy("year", "month", "day", "hour") \
+    #     .option("header", "true") \
     #     .option("checkpointLocation", checkpoint_path) \
     #     .option("path", output_path) \
-    #     .trigger(processingTime="60 seconds") \
     #     .start() \
     #     .awaitTermination()
 
-    # df.writeStream \
-    #     .format("parquet") \
-    #     .option("checkpointLocation", checkpoint_path) \
-    #     .outputMode("append") \
-    #     .option("path", output_path) \
-    #     .partitionBy("year", "month", "day", "hour") \
-    #     .start() \
-    #     .awaitTermination()
+    query = df.writeStream.foreach(ForeachWriter()).start().awaitTermination()
 
 
 if __name__ == '__main__':
     print("##### Waiting Kafka #####")
-    time.sleep(100)
+    # time.sleep(100)
     print('########## Spark consumer start ##########')
     preprocess_save_tweets()
 

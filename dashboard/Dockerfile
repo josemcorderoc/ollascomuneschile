@@ -1,6 +1,9 @@
 FROM python:3.8-slim
 
-RUN pip install pandas awswrangler Flask plotly schedule gunicorn
+#RUN apt-get install -y python3-psycopg2
+RUN apt-get update
+RUN apt-get install -y python-dev libpq-dev gcc
+RUN pip install pandas Flask plotly schedule gunicorn psycopg2
 
 WORKDIR /app
 
