@@ -29,41 +29,32 @@ conn = psycopg2.connect(
     database="ollascomuneschile",
     user="postgres",
     host="db",
-    # password=os.environ['POSTGRES_PASSWORD']
-    password='Eljose1996'
+    password=os.environ['POSTGRES_PASSWORD']
 )
 cur = conn.cursor()
-
-
-
-# ollascomunes_tweets_producer = KafkaProducer(bootstrap_servers='localhost:9092') #todo cambiar
 
 
 class MyStreamListener(tweepy.StreamListener):
     i = 0
 
     def on_status(self, status):
-
         if 'retweeted_status' not in status._json:
             self.i += 1
             print(f'Mensaje num {self.i} enviado a las {datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")}')
 
             ollascomunes_tweets_producer.send(TOPIC_OLLAS_COMUNES_TWITTER,
                                               json.dumps(status._json).encode('utf-8'))
-
             json_text = json.dumps(status._json).replace("'", "''")
             try:
                 cur.execute(
-                f"""INSERT INTO tweets_ollascomunes_raw (info) VALUES ( to_json('{json_text}'::text) );""")
+                    f"""INSERT INTO tweets_ollascomunes_raw (info) VALUES ( to_json('{json_text}'::text) );""")
                 conn.commit()
             except Exception as e:
                 print("ERROR", e)
+
     def on_exception(self, exception):
         print(exception)
         return
-#
-#
-# f"""INSERT INTO tweets_ollascomunes_raw (info) VALUES ( to_json('{json_text}'::text) );""")
 
 
 if __name__ == '__main__':
@@ -77,7 +68,7 @@ if __name__ == '__main__':
         '@ComunOlla': '1259208616776732672',
         '@LaOlladeChile': '1263146335206887424'
     }
-    myStream.filter(track=['trump'])
+    myStream.filter(track=queries, follow=users.values())
 
     # if ends
     cur.close()

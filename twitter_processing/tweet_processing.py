@@ -1,3 +1,4 @@
+import os
 import time
 
 import pandas as pd
@@ -60,45 +61,45 @@ for i, row in pd.read_csv("comunas.csv").iterrows():
 class ForeachWriter:
 
     def process(self, row):
-        # Write row to connection. This method is NOT optional in Python.
-        row = row.asDict()
-        print(row)
-
-        conn = psycopg2.connect(
-            database="ollascomuneschile",
-            user="postgres",
-            host="db",
-            # password=os.environ['POSTGRES_PASSWORD']
-            password='Eljose1996'
-        )
-        cur = conn.cursor()
         try:
-            values = (
-                str(row["tweet_id_str"]),
-                str(row["created_at"]),
-                str(row["text"]),
-                str(row["user_id_str"]),
-                str(row["user_screen_name"]),
-                int(row["user_followers_count"]),
-                int(row["user_friends_count"]),
-                int(row["user_statuses_count"]),
-                int(row["datetime"]),
-                str(row["comuna_identificada"])
+            conn = psycopg2.connect(
+                database="ollascomuneschile",
+                user="postgres",
+                host="db",
+                password=os.environ['POSTGRES_PASSWORD']
             )
-        except Exception as e:
-            print("ERROR", e)
 
-        cur.execute(f"""INSERT INTO tweets_ollascomunes_processed (tweet_id_str, created_at, text, user_id_str, user_screen_name,
-                        user_followers_count, user_friends_count, user_statuses_count, datetime, comuna_identificada) 
-                VALUES (
-                    {",".join(values)}
-            );""")
+            cur = conn.cursor()
+            row = row.asDict()
 
-        conn.commit()
+            values = (
+                row["tweet_id_str"],
+                row["created_at"],
+                row["text"],
+                row["user_id_str"],
+                row["user_screen_name"],
+                row["user_followers_count"],
+                row["user_friends_count"],
+                row["user_statuses_count"],
+                row["datetime"],
+                row["comuna_identificada"]
+            )
 
-    # def close(self, error):
-    #     # Close the connection. This method in optional in Python.
-    #     pass
+            cur.execute(f"""INSERT INTO tweets_ollascomunes_processed (tweet_id_str, created_at, text, user_id_str, user_screen_name,
+                            user_followers_count, user_friends_count, user_statuses_count, datetime, comuna_identificada)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);""", values)
+
+            conn.commit()
+            cur.close()
+        except psycopg2.DatabaseError as error:
+            print(error)
+        finally:
+            if conn is not None:
+                conn.close()
+
+    def close(self, error):
+        if error:
+            print(error)
 
 
 
