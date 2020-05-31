@@ -32,8 +32,8 @@ class OllasComunesDB:
         self.df = pd.DataFrame()
         self.updates_history = []
 
-        self.get_initial_data()
-        self.thread_update_data()
+        # self.get_initial_data()
+        # self.thread_update_data()
 
     def get_last_update_string(self):
         return self.last_update.strftime("%d-%m-%Y %H:%M:%S")

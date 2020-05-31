@@ -36,7 +36,7 @@
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script src="https://kit.fontawesome.com/7302a60ea2.js" crossorigin="anonymous"></script>
 
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<!--  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
   <link rel='shortcut icon' type='image/x-icon' href='assets/favicon.ico'/>
   <link rel="stylesheet" href="assets/style.css">
@@ -106,9 +106,15 @@
       <div id="latest-tweets"></div>
     </div>
     <div class="col-md-6">
-      <h3>Tweets de la semana</h3>
+      <h3>Mapa de iniciativas</h3>
+      <div>Autora: Melisa Miranda (<a href="https://twitter.com/Meluisa_Paz">@Meluisa_Paz</a>)</div>
       <!--      <p><i>(Clickea un punto para dirigirte al tweet correspondiente)</i></p>-->
-      <div class="chart responsive-plot" id="bargraph"></div>
+<!--      <div class="chart responsive-plot" id="bargraph"></div>-->
+
+      <div class="mapa">
+<!--        TODO: hacer click que cambie las coordenadas: appendear &ll=-33.589358, -70.696528 y hacer un get con la comuna-->
+        <iframe src="https://www.google.com/maps/d/embed?mid=1exEIU3cBLOVGJLhQ3kyv4aNwrp1slzp5" width="640" height="480"></iframe>
+      </div>
       <hr>
     </div>
   </div>
