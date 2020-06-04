@@ -8,7 +8,7 @@ function render_tweets() {
             id, tweet,
             {
                 conversation: 'none',    // or all
-                cards: 'hidden',  // or visible
+                cards: 'visible',  // or visible
                 linkColor: '#cc0000', // default is blue
                 theme: 'light'    // or dark
             })

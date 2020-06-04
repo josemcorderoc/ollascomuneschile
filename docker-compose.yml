@@ -121,3 +121,5 @@ services:
 
 #docker-compose up -d --no-deps --build <service_name>
 #docker-compose restart <service_name>
+
+#docker-compose up -d --no-deps --build web-app

@@ -104,7 +104,11 @@ class ForeachWriter:
 
 
 
-
+def comuna_tweet_prueba(tweet):
+    preprocessed_tweet = unidecode(tweet)
+    keywords_found = COMUNAS_KEYWORDS.extract_keywords(preprocessed_tweet)
+    keywords_found = list(set(keywords_found))
+    return ",".join(keywords_found)
 
 @udf(returnType=StringType())
 def get_tweet_datetime(created_at):
