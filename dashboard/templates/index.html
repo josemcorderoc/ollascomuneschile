@@ -15,14 +15,14 @@
   <meta property="og:url" content="http://www.ollascomuneschile.cl">
   <meta property="og:title" content="#OllasComunes de Chile">
   <meta property="og:description" content="Información sobre ollas comunes y acopios por comuna a partir de Twitter.">
-  <meta property="og:image" content="assets/IMG_5214-edit-min.JPG">
+  <meta property="og:image" content="assets/logo.jpeg">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="http://www.ollascomuneschile.cl">
   <meta property="twitter:title" content="#OllasComunes de Chile">
   <meta property="twitter:description" content="Información sobre ollas comunes y acopios por comuna a partir de Twitter.">
-  <meta property="twitter:image" content="assets/IMG_5214-edit-min.JPG">
+  <meta property="twitter:image" content="assets/logo.jpeg">
 
 
 
@@ -36,7 +36,7 @@
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script src="https://kit.fontawesome.com/7302a60ea2.js" crossorigin="anonymous"></script>
 
-<!--  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
+  <!--  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
   <link rel='shortcut icon' type='image/x-icon' href='assets/favicon.ico'/>
   <link rel="stylesheet" href="assets/style.css">
@@ -44,33 +44,45 @@
 
 </head>
 <body>
-<div class="header p-4 mb-5 text-center" style="background-color: #7eddfa">
+<div class="header p-4 mb-5 text-center" style="background-color: #f7f7f7">
   <div class="container">
     <div class="row justify-content-center">
 
-      <div class="col-md-6">
-        <h2>#OllasComunes de Chile</h2>
-        <p><i>"Hay dos panes. Usted se come dos. Yo ninguno. <br> Consumo promedio: un pan por persona" (Nicanor Parra)</i></p>
+      <div class="col-md-4">
+        <img class="img-fluid mb-3" src="assets/logo.jpeg" alt="logo">
+        <div class="mb-3"><small>Agradecimientos a <a target="_blank" rel="noopener noreferrer"  href="https://www.behance.net/montecinos">Rodrigo Montecinos</a> por la ilustración.</small></div>
+    </div>
 
-        <p align="justify">
-          En esta página puedes consultar información actualizada en tiempo real de distintas ollas comunes
-          y acopios de alimento, de acuerdo a información de Twitter, tan solo seleccionando la comuna de interés.</p>
+    <div class="col-md-4">
+      <h2>#OllasComunes de Chile</h2>
+      <p><i>"Hay dos panes. Usted se come dos. Yo ninguno. <br> Consumo promedio: un pan por persona" (Nicanor Parra)</i></p>
+      <p align="justify">
+        En esta página puedes consultar información actualizada en tiempo real de distintas ollas comunes
+        y acopios de alimento, de acuerdo a información de Twitter, tan solo seleccionando la comuna de interés.</p>
 
-
-        <label><b>Seleccione una comuna:</b></label>
-        <select class="form-control" id ='select-comuna'>
-          <option disabled selected value> ------ </option>
-        </select>
-        <div>
-          <small>¿Por qué no aparece mi comuna? </small>
-          <a id="info-comunas" rel="tooltip" title="Las comunas se van agregando automáticamente a medida que identificamos
+      <i> (<b>Advertencia:</b> las informaciones vertidas en Twitter dependen de quién las emite y pueden ser falsas.)</i>
+      <br>
+      <br>
+      <label><b>Seleccione una comuna:</b></label>
+      <select class="form-control" id ='select-comuna'>
+        <option disabled selected value> ------ </option>
+      </select>
+      <div>
+        <small>¿Por qué no aparece mi comuna? </small>
+        <a id="info-comunas" rel="tooltip" title="Las comunas se van agregando automáticamente a medida que identificamos
          tweets nuevos que la mencionan. Lamentablemente, en Twitter no se sube información de todas las comunas del país.
          Si quieres que tu información salga aquí, solo debes twittear con el hashtag #OllasComunes y mencionar tu comuna
          en el tweet."><i class="fas fa-question-circle"></i></a>
-        </div>
-        <div class="m-3" id="ultima-actualizacion"></div>
       </div>
-      <div class="col-md-6">
+      <div class="m-3" id="ultima-actualizacion"></div>
+
+    </div>
+
+
+
+      <!--      <div class="col-md-4"><img src="assets/logo.jpeg" alt="logo"></div>-->
+
+      <div class="col-md-4">
         <div style="margin-left: auto;"></div>
 
         <ul class="fa-ul" style="list-style-type:none; text-align: left;">
@@ -89,14 +101,11 @@
 
 
         <p><small>
-          Este proyecto es <a href="https://es.wikipedia.org/wiki/Software_libre">software libre</a>. Si te interesa saber más, puedes revisar el código fuente en <a href="https://github.com/josemcorderoc/ollascomuneschile">GitHub</a>.
+          Este proyecto es <a target="_blank" rel="noopener noreferrer" href="https://es.wikipedia.org/wiki/Software_libre">software libre</a>. Si te interesa saber más, puedes revisar el código fuente en <a target="_blank" rel="noopener noreferrer" href="https://github.com/josemcorderoc/ollascomuneschile">GitHub</a>.
         </small></p>
-        <i> (<b>Advertencia:</b> las informaciones vertidas en Twitter dependen de quién las emite y pueden ser falsas.)</i>
-      </div>
-    </div>
-  </div>
-</div>
 
+      </div>
+  </div></div>
 
 <div class="container">
   <div class="row parent">
@@ -108,13 +117,13 @@
     </div>
     <div class="col-md-6">
       <h3>Mapa de iniciativas</h3>
-      <div>Autora: Melisa Miranda (<a href="https://twitter.com/Meluisa_Paz">@Meluisa_Paz</a>)</div>
+      <div> <small>Autora: Melisa Miranda (<a target="_blank" rel="noopener noreferrer" href="https://twitter.com/Meluisa_Paz">@Meluisa_Paz</a>) </small></div>
       <!--      <p><i>(Clickea un punto para dirigirte al tweet correspondiente)</i></p>-->
-<!--      <div class="chart responsive-plot" id="bargraph"></div>-->
+      <!--      <div class="chart responsive-plot" id="bargraph"></div>-->
 
       <div class="mapa">
-<!--        TODO: hacer click que cambie las coordenadas: appendear &ll=-33.589358, -70.696528 y hacer un get con la comuna-->
-<!--        <iframe src="https://www.google.com/maps/d/embed?mid=1exEIU3cBLOVGJLhQ3kyv4aNwrp1slzp5" width="640" height="480"></iframe>-->
+        <!--        TODO: hacer click que cambie las coordenadas: appendear &ll=-33.589358, -70.696528 y hacer un get con la comuna-->
+        <!--        <iframe src="https://www.google.com/maps/d/embed?mid=1exEIU3cBLOVGJLhQ3kyv4aNwrp1slzp5" width="640" height="480"></iframe>-->
         <iframe src="https://www.google.com/maps/d/embed?mid=1exEIU3cBLOVGJLhQ3kyv4aNwrp1slzp5" width="640" height="480"></iframe>
       </div>
       <hr>

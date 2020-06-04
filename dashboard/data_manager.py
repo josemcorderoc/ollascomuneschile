@@ -9,7 +9,7 @@ import pytz
 
 SANTIAGO_TZ = pytz.timezone('America/Santiago')
 
-
+#
 # TWEETS_DTYPES = {
 #     'tweet_id_str': 'str',
 #     'created_at': 'str',
@@ -33,7 +33,9 @@ class OllasComunesDB:
         self.conn = psycopg2.connect(
             database="ollascomuneschile",
             user="postgres",
-            host="db",
+            # host="db",
+            host='18.221.221.216',
+            port='7777',
             password=os.environ['POSTGRES_PASSWORD']
         )
         self.get_initial_data()
