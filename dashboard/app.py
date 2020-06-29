@@ -1,7 +1,7 @@
 import json
 import plotly
 import plotly.graph_objs as go
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response, send_from_directory
 import data_manager
 
 app = Flask(__name__, static_folder="assets")
@@ -56,6 +56,11 @@ def db_status():
 @app.route('/data/db')
 def show_db():
     return ollascomunesdb.df.to_json(force_ascii=False)
+
+
+@app.route('/sitemap.xml')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 # @app.route('/data/last_update')
 # def last_update_time():
