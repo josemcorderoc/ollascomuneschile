@@ -12,7 +12,8 @@ USER root
 # Add essential packages
 RUN apt-get update && apt-get install -y build-essential curl git gnupg2 nano apt-transport-https software-properties-common
 # Set locale
-RUN apt-get install -y postgresql-server-dev-10 gcc python3-dev musl-dev
+RUN apt-get install -y gcc python3-dev musl-dev
+RUN apt install -y postgresql-server-dev-10
 RUN pip install kafka_python flashtext psycopg2
 
 
