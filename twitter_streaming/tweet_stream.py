@@ -8,6 +8,7 @@ import psycopg2
 import json
 
 from psycopg2._json import Json
+from urllib3.exceptions import ProtocolError
 
 TOPIC_OLLAS_COMUNES_TWITTER = "ollas-comunes-topic"
 
@@ -68,8 +69,14 @@ if __name__ == '__main__':
         '@ComunOlla': '1259208616776732672',
         '@LaOlladeChile': '1263146335206887424'
     }
-    myStream.filter(track=queries, follow=users.values())
 
+    while True:
+        try:
+            myStream.filter(track=queries, follow=users.values())
+        except (ProtocolError, AttributeError):
+            print('Hubo un error (ProtocolError)')
+            time.sleep(5)
+            continue
     # if ends
     cur.close()
     conn.commit()
