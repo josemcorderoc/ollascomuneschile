@@ -1,4 +1,4 @@
-# ollascomuneschile (en desarrollo)
+# ollascomuneschile
 
 Aplicación web para ver en tiempo real información de las ollas comunes por comuna a partir de datos de Twitter. Busca ser un aporte a la seguridad alimentaria en la pandemia del COVID-19, 2020.
 
