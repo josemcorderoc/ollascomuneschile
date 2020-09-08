@@ -4,8 +4,6 @@ Aplicación web para ver en tiempo real información de las ollas comunes por co
 
 Sitio web: [http://ollascomuneschile.cl/](http://ollascomuneschile.cl/)
 
-Autor: José Miguel Cordero [jcordero@dcc.uchile.cl](mailto:jcordero@dcc.uchile.cl)
-
 ### ¿Cómo ejecutarlo?
 
 Simplemente copia el repositorio y ejecuta "docker-compose up -d --build" en la carpeta principal 
